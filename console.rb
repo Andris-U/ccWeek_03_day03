@@ -24,3 +24,20 @@ p Artist.list_all
 p Artist.all_albums art_op1.id
 
 p album1ops.artist
+
+art_op1.name = 'Paft Dunk'
+art_op1.update
+
+p Artist.list_all
+
+album1ops.title = 'Hamework'
+album1ops.update
+
+p Album.list_all
+p Artist.find_by_id art_op1.id
+
+Album.delete_by_title 'Hamework'
+Artist.delete_artist 'Paft Dunk'
+
+p Album.list_all
+p Artist.list_all

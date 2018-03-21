@@ -10,6 +10,7 @@ class Album
     @title = options['title']
     @genre = options['genre']
     @artist_id = options['artist_id'].to_i
+    @id = options['id'].to_i
   end
 
   def save
@@ -31,6 +32,26 @@ class Album
     list = SqlRunner.run sql, values
     return list.first['name'] if list.first
     return nil
+  end
+
+  def update
+    sql = "
+      UPDATE albums
+      SET (title, genre, artist_id, id)
+        = ($1, $2, $3, $4)
+      WHERE id = $4;
+    "
+    values = [@title, @genre, @artist_id, @id]
+    SqlRunner.run sql, values
+  end
+
+  def self.delete_by_title title
+    sql = "
+      DELETE FROM albums
+      WHERE title = $1;
+    "
+    values = [title]
+    SqlRunner.run sql, values
   end
 
   def self.list_all

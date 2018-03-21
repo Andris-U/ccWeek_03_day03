@@ -19,6 +19,36 @@ class Artist
     @id = SqlRunner.run(sql, [@name]).first['id']
   end
 
+  def update
+    sql = "
+      UPDATE artists
+      SET (name, id) = ($1, $2)
+      WHERE id = $2;
+    "
+    values = [@name, @id]
+    SqlRunner.run sql, values
+  end
+
+  def self.find_by_id id
+    sql = "
+      SELECT * FROM artists
+      WHERE id = $1;
+    "
+    values = [id.to_s]
+    result = SqlRunner.run sql, values
+    return Artist.new(result.first) if result.first != nil
+    return nil
+  end
+
+  def self.delete_artist name
+    sql = "
+      DELETE FROM artists
+      WHERE name = $1;
+    "
+    values = [name]
+    SqlRunner.run sql, values
+  end
+
   def self.list_all
     sql = "
       SELECT * FROM artists;
